@@ -1,19 +1,25 @@
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { defineStore } from 'pinia'
-
-type DungeonRoom = {
-  name: string;
-  effect: string;
-}
-
-type Dungeon = {
-  name: string;
-  currentRoom: number;
-  rooms: DungeonRoom[];
-}
+import Dungeons from '../dungeons'
+import type { Dungeon } from '@/dungeons/Dungeon'
 
 export const useGameStore = defineStore('game', () => {
+  const state = computed(() =>
+    Dungeons.reduce(
+      (state, dungeon) => {
+        state[dungeon.id] = {
+          finished: 0,
+          dungeon
+        }
+        return state
+      },
+      {} as { [id: string]: { dungeon: Dungeon; finished: number } }
+    )
+  )
 
+  function increment(id: string) {
+    state.value[id].finished += 1
+  }
 
-  return { count, doubleCount, increment }
+  return { state, increment }
 })
