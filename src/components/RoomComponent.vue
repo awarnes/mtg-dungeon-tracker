@@ -5,19 +5,16 @@ const props = defineProps<{
   effect: string
   disabled: boolean
   active: boolean
+  visited?: boolean
   venture: (id: string) => void
 }>()
-
-defineExpose({
-  apple: () => console.log(props.name)
-})
 </script>
 
 <template>
   <button
     :id="props.id"
     :disabled="props.disabled"
-    :class="active ? 'active' : ''"
+    :class="active ? 'active' : visited ? 'visited' : ''"
     @click="() => venture(props.id)"
   >
     <h2>{{ props.name }}</h2>
@@ -28,6 +25,11 @@ defineExpose({
 <style>
 .active {
   border-color: green;
-  background-color: white;
+  background-color: rgb(133, 224, 219);
+}
+
+.visited {
+  border-color: rgb(130, 44, 44);
+  background-color: rgb(232, 127, 127);
 }
 </style>

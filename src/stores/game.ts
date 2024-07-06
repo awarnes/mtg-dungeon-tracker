@@ -21,5 +21,12 @@ export const useGameStore = defineStore('game', () => {
     state.value[id].finished += 1
   }
 
-  return { state, increment }
+  function reset() {
+    for (const dungeon of Object.values(state.value)) {
+      dungeon.finished = 0
+    }
+    return state
+  }
+
+  return { state, increment, reset }
 })

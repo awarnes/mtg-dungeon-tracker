@@ -13,6 +13,7 @@ export class Room {
   readonly id: string
   readonly name: string
   readonly effect: string
+  level: number = 0
 
   constructor(
     data: RoomData,
@@ -129,18 +130,22 @@ export class Dungeon {
     return visitedRoomCount === this.roomsById.size
   }
 
-  reverse() {
-    const reverseGraph = new Dungeon(this.name, this.id)
+  assignLevels(roomIds: string[], level = 0) {
+    level++
+    // Reverse sort so that tomb displays correctly :/
+    for (const roomId of roomIds.sort((a, b) => a.localeCompare(b))) {
+      const room = this.getRoom(roomId)
 
-    for (const room of this.roomsById.values()) {
-      reverseGraph.addRoom(room)
-      for (const path of room.rooms) {
-        const depData = this.roomsById.get(path)
-        reverseGraph.addRoom(depData)
-        reverseGraph.addPath(room, depData)
+      if (!room) {
+        continue
       }
-    }
 
-    return reverseGraph
+      room.level = level
+
+      if (!room.rooms || !room.rooms.size) {
+        break
+      }
+      this.assignLevels(Array.from(room.rooms), level)
+    }
   }
 }

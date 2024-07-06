@@ -28,13 +28,13 @@
 </template>
 
 <script setup lang="ts">
-type Point = {
+export type Point = {
   x: number
   y: number
 }
 const { thickness, color, start, end } = defineProps<{
-  thickness: number
   color: string
+  thickness: number
   start: Point
   end: Point
 }>()
