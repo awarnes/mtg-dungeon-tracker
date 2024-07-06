@@ -5,18 +5,18 @@ import { computed, ref } from 'vue'
 const store = useGameStore()
 
 const completed = computed(() => {
-  console.log('CALCULATING')
   return Object.values(store.state).reduce((sum, { finished }) => {
     sum += finished
     return sum
   }, 0)
 })
 
-const resetModal = ref(null)
+const resetModal = ref<HTMLDialogElement | null>(null)
 
 function handleReset() {
+  // TODO: Reset still not refreshing page (even though state gets updated)
   store.reset()
-  resetModal.value.close()
+  resetModal?.value?.close()
 }
 </script>
 
@@ -25,7 +25,7 @@ function handleReset() {
     <div id="score-board">
       <h1></h1>
       <h2>Dungeons completed: {{ completed }}</h2>
-      <button class="green" @click="() => resetModal.showModal()">Reset</button>
+      <button class="green" @click="() => resetModal?.showModal()">Reset</button>
     </div>
     <div id="dungeon-links">
       <RouterLink
@@ -41,7 +41,7 @@ function handleReset() {
     <p>Are you sure you want to reset the game?</p>
     <div id="modal-actions">
       <button @click="handleReset">Ok</button>
-      <button @click="() => resetModal.close()">Cancel</button>
+      <button @click="() => resetModal?.close()">Cancel</button>
     </div>
   </dialog>
 </template>
